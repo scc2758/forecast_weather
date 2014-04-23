@@ -150,7 +150,6 @@ public class MainActivity extends FragmentActivity {
     protected List<Location> doInBackground(Object... params) {
       JSONObject weatherData = null;
       int length = 0;
-      List<Weather> tmpList = null;
 
       for (int x=0; x< mLocations.size(); x++ ){
 
@@ -177,21 +176,22 @@ public class MainActivity extends FragmentActivity {
           JSONObject hourly = weatherData.getJSONObject("hourly");
           JSONArray hourly_data = hourly.getJSONArray("data");
           length = hourly_data.length();
-          tmpList = new ArrayList<Weather>();
+          List<Weather> hourlyWeatherList = new ArrayList<Weather>();
           for (int i = 0; i < length; i++){
-            tmpList.add(createWeather(hourly_data.getJSONObject(i)));
+            hourlyWeatherList.add(createWeather(hourly_data.getJSONObject(i)));
           }
-          mLocations.get(x).getWeather().setHourly(tmpList);
+          mLocations.get(x).getWeather().setHourly(hourlyWeatherList);
+
 
           //get daily weather data
           JSONObject daily = weatherData.getJSONObject("daily");
-          JSONArray daily_data = weatherData.getJSONArray("data");
-          tmpList.clear();
+          JSONArray daily_data = daily.getJSONArray("data");
+          List<Weather> dailyWeatherList = new ArrayList<Weather>();
           length = daily_data.length();
           for (int i = 0; i < length; i++) {
-              tmpList.add(createWeather(daily_data.getJSONObject(i)));
+              dailyWeatherList.add(createWeather(daily_data.getJSONObject(i)));
           }
-          mLocations.get(x).getWeather().setDaily(tmpList);
+          mLocations.get(x).getWeather().setDaily(dailyWeatherList);
 
         }catch (Exception e){
           Log.e("WEATHER", e.toString());
@@ -207,7 +207,11 @@ public class MainActivity extends FragmentActivity {
 
     private Weather createWeather(JSONObject dataPoint) throws JSONException{
       Weather weather = new Weather();
+      try {
       weather.setTemperature(dataPoint.getDouble("temperature"));
+      } catch (Exception e){
+
+      }
       weather.setTime(dataPoint.getInt("time"));
       return weather;
     }
