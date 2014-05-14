@@ -7,6 +7,8 @@ public class Location {
   private float mLat;
   private float mLon;
 
+  Location(){}
+
   Location(String name, float lat, float lon){
     mName = name;
     mLat = lat;
@@ -23,5 +25,21 @@ public class Location {
 
   public float getLon(){
     return mLon;
+  }
+
+  public void setId(int id){
+    mId = id;
+  }
+
+  public void setName(String name){
+    mName = name;
+  }
+
+  public void setLat(float lat){
+    mLat = lat;
+  }
+
+  public void setLon(float lon){
+    mLon = lon;
   }
 }
