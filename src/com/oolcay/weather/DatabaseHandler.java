@@ -1,5 +1,6 @@
 package com.oolcay.weather;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -31,5 +32,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+  }
+
+  public void addLocation(Location location) {
+    SQLiteDatabase db = this.getWritableDatabase();
+
+    ContentValues values = new ContentValues();
+    values.put(KEY_NAME, location.getName());
+    values.put(KEY_LAT, location.getLat());
+    values.put(KEY_LON, location.getLon());
+    db.insert(TABLE_LOCATIONS, null, values);
+    db.close();
   }
 }
