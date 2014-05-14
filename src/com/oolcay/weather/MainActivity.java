@@ -1,11 +1,13 @@
 package com.oolcay.weather;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.jjoe64.graphview.GraphView;
@@ -87,6 +89,12 @@ public class MainActivity extends Activity {
     layout.addView(graphView);
 
   }
+
+  public void openLocations(View v){
+    Intent intent = new Intent(this, LocationActivity.class);
+    startActivity(intent);
+  }
+
   public class GetWeather extends AsyncTask<Object, Void, JSONObject> {
 
     @Override
