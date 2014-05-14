@@ -2,8 +2,12 @@ package com.oolcay.weather;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -43,5 +47,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     values.put(KEY_LON, location.getLon());
     db.insert(TABLE_LOCATIONS, null, values);
     db.close();
+  }
+
+  public List<Location> getAllLocations(){
+    List<Location> locations = new ArrayList<Location>();
+
+    String selectQuery = "SELECT  * FROM " + TABLE_LOCATIONS;
+
+    SQLiteDatabase db = this.getWritableDatabase();
+    Cursor cursor = db.rawQuery(selectQuery, null);
+
+    if (cursor.moveToFirst()) {
+      do {
+        Location location = new Location();
+        location.setId(Integer.parseInt(cursor.getString(0)));
+        location.setName(cursor.getString(1));
+        location.setLat(Float.parseFloat(cursor.getString(2)));
+        location.setLon(Float.parseFloat(cursor.getString(3)));
+        locations.add(location);
+      } while (cursor.moveToNext());
+    }
+    return locations;
   }
 }
