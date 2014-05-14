@@ -6,15 +6,26 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-  public static final String DATABASE_NAME = "FORECAST_WEATHER";
-  public static final int DATABASE_VERSION = 1;
+  private static final String DATABASE_NAME = "FORECAST_WEATHER";
+  private static final int DATABASE_VERSION = 1;
+
+  private static final String TABLE_LOCATIONS = "locations";
+  private static final String KEY_ID = "id";
+  private static final String KEY_NAME = "name";
+  private static final String KEY_LAT = "lat";
+  private static final String KEY_LON = "lon";
 
   public DatabaseHandler(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
-  }
+   }
+
   @Override
   public void onCreate(SQLiteDatabase db) {
+    String query = "CREATE TABLE" + TABLE_LOCATIONS + "()"
+        + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " TEXT, "
+        + KEY_LAT + " REAL, " + KEY_LON + " REAL" + ")";
 
+    db.execSQL(query);
   }
 
   @Override
