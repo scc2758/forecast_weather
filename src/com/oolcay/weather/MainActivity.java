@@ -1,6 +1,8 @@
 package com.oolcay.weather;
 
 import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,14 +16,36 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.List;
+
 public class MainActivity extends Activity {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
-    GetWeather getWeather = new GetWeather();
-    getWeather.execute();
+    //GetWeather getWeather = new GetWeather();
+    //getWeather.execute();
+
+    Geocoder geocoder = new Geocoder(this);
+    String here = "1600 Amphitheatre Parkway, Mountain View, CA";
+    Address address = null;
+    List<Address> addresses;
+    double latitude = 0;
+    double longitude = 0;
+
+    try {
+      addresses = geocoder.getFromLocationName(here, 1);
+      if(addresses.size() > 0) {
+        latitude= addresses.get(0).getLatitude();
+        longitude= addresses.get(0).getLongitude();
+      }
+    } catch (IOException e) {
+      Log.e ("WEATHER", e.toString());
+    }
+    Toast.makeText(this, latitude + ", " + longitude, Toast.LENGTH_LONG).show();
+
   }
 
   private void handleResponse(JSONObject results){
@@ -29,8 +53,6 @@ public class MainActivity extends Activity {
     if (results == null){
       Toast.makeText(this, "Error Loading Weather Data", Toast.LENGTH_SHORT);
     }
-
-
 
     GraphView.GraphViewData[] points = new GraphView.GraphViewData[0];
 
