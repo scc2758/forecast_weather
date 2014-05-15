@@ -34,7 +34,6 @@ public class LocationActivity extends ListActivity {
 
     setupListeners();
 
-
     //setListAdapter(adapter);
 
   }
@@ -50,16 +49,17 @@ public class LocationActivity extends ListActivity {
     List<Address> addresses;
     double latitude = 0;
     double longitude = 0;
+    String name = "";
     try {
       addresses = geocoder.getFromLocationName(location, 1);
       if(addresses.size() > 0) {
         latitude= addresses.get(0).getLatitude();
         longitude= addresses.get(0).getLongitude();
+        name = addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea();
       }
     } catch (IOException e) {
       Log.e("WEATHER", e.toString());
     }
-    Toast.makeText(this, latitude + ", " + longitude, Toast.LENGTH_LONG).show();
   }
 
   private void setupListeners(){
