@@ -1,4 +1,4 @@
-package com.oolcay.weather;
+package com.oolcay.weather.Models;
 
 public class Location {
 
@@ -7,9 +7,9 @@ public class Location {
   private double mLat;
   private double mLon;
 
-  Location(){}
+  public Location(){}
 
-  Location(String name, double lat, double lon){
+  public Location(String name, double lat, double lon){
     mName = name;
     mLat = lat;
     mLon = lon;
