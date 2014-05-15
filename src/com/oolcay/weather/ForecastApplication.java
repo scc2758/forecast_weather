@@ -1,15 +1,16 @@
 package com.oolcay.weather;
 
 import android.app.Application;
+import com.oolcay.weather.Models.Location;
 
 public class ForecastApplication extends Application{
-  private int mCurrentLocation; //id of location in database
+  private Location mCurrentLocation;
 
-  public int getCurrentLocation(){
+  public Location getCurrentLocation(){
     return mCurrentLocation;
   }
 
-  public void setCurrentLocation(int location){
+  public void setCurrentLocation(Location location){
     mCurrentLocation = location;
   }
 }
