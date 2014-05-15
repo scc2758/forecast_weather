@@ -4,12 +4,12 @@ public class Location {
 
   private int mId;
   private String mName;
-  private float mLat;
-  private float mLon;
+  private double mLat;
+  private double mLon;
 
   Location(){}
 
-  Location(String name, float lat, float lon){
+  Location(String name, double lat, double lon){
     mName = name;
     mLat = lat;
     mLon = lon;
@@ -19,11 +19,11 @@ public class Location {
     return mName;
   }
 
-  public float getLat(){
+  public double getLat(){
     return mLat;
   }
 
-  public float getLon(){
+  public double getLon(){
     return mLon;
   }
 
@@ -35,11 +35,11 @@ public class Location {
     mName = name;
   }
 
-  public void setLat(float lat){
+  public void setLat(double lat){
     mLat = lat;
   }
 
-  public void setLon(float lon){
+  public void setLon(double lon){
     mLon = lon;
   }
 }
