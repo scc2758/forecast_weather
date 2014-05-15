@@ -29,25 +29,6 @@ public class MainActivity extends Activity {
     setContentView(R.layout.main);
     //GetWeather getWeather = new GetWeather();
     //getWeather.execute();
-
-    Geocoder geocoder = new Geocoder(this);
-    String here = "1600 Amphitheatre Parkway, Mountain View, CA";
-    Address address = null;
-    List<Address> addresses;
-    double latitude = 0;
-    double longitude = 0;
-
-    try {
-      addresses = geocoder.getFromLocationName(here, 1);
-      if(addresses.size() > 0) {
-        latitude= addresses.get(0).getLatitude();
-        longitude= addresses.get(0).getLongitude();
-      }
-    } catch (IOException e) {
-      Log.e ("WEATHER", e.toString());
-    }
-    Toast.makeText(this, latitude + ", " + longitude, Toast.LENGTH_LONG).show();
-
   }
 
   private void handleResponse(JSONObject results){
