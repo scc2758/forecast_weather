@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase db) {
-    String query = "CREATE TABLE" + TABLE_LOCATIONS + "()"
+    String query = "CREATE TABLE " + TABLE_LOCATIONS + "( "
         + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_NAME + " TEXT, "
         + KEY_LAT + " REAL, " + KEY_LON + " REAL" + ")";
 
@@ -62,8 +62,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Location location = new Location();
         location.setId(Integer.parseInt(cursor.getString(0)));
         location.setName(cursor.getString(1));
-        location.setLat(Float.parseFloat(cursor.getString(2)));
-        location.setLon(Float.parseFloat(cursor.getString(3)));
+        location.setLat(Double.parseDouble(cursor.getString(2)));
+        location.setLon(Double.parseDouble(cursor.getString(3)));
         locations.add(location);
       } while (cursor.moveToNext());
     }
