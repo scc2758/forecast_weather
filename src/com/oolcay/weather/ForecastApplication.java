@@ -4,7 +4,7 @@ import android.app.Application;
 import com.oolcay.weather.Models.Location;
 
 public class ForecastApplication extends Application{
-  private Location mCurrentLocation;
+  private Location mCurrentLocation = null;
 
   public Location getCurrentLocation(){
     return mCurrentLocation;
