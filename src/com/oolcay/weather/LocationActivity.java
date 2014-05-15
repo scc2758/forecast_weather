@@ -10,10 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,11 +27,21 @@ public class LocationActivity extends ListActivity {
     setContentView(R.layout.locations);
     mContext = this;
 
+    DatabaseHandler databaseHandler = new DatabaseHandler(this);
+
+    //do we need a custom adapter for an array of locations, when all we display is a string
+    List<Location> locations = databaseHandler.getAllLocations();
+    List<String> locationsArry = new ArrayList<String>();
+
+    for (int x=0; x< locations.size(); x++){
+      locationsArry.add(locations.get(0).getName());
+      setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locationsArry ));
+
+    }
+
     addLocationEditText = (EditText)findViewById(R.id.add_location);
 
     setupListeners();
-
-    //setListAdapter(adapter);
 
   }
 
@@ -43,25 +50,25 @@ public class LocationActivity extends ListActivity {
     super.onListItemClick(l, v, position, id);
   }
 
-  private void findLocation(String location){
+  private void findLocation(String search){
     Geocoder geocoder = new Geocoder(this);
     Address address = null;
     List<Address> addresses;
-    double latitude = 0;
-    double longitude = 0;
-    String name = "";
+    Location location = new Location();
+
     try {
-      addresses = geocoder.getFromLocationName(location, 1);
+      addresses = geocoder.getFromLocationName(search, 1);
       if(addresses.size() > 0) {
-        latitude= addresses.get(0).getLatitude();
-        longitude= addresses.get(0).getLongitude();
-        name = addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea();
+        location.setLat(addresses.get(0).getLatitude());
+        location.setLon(addresses.get(0).getLongitude());
+        location.setName(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
+        DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        databaseHandler.addLocation(location);
       }
     } catch (IOException e) {
       Log.e("WEATHER", e.toString());
     }
   }
-
   private void setupListeners(){
     addLocationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
       @Override
@@ -78,5 +85,4 @@ public class LocationActivity extends ListActivity {
       }
     });
   }
-
 }
