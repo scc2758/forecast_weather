@@ -1,5 +1,6 @@
 package com.oolcay.weather.Network;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,9 +26,10 @@ public class Request {
     mUrl = url;
   }
 
-  public JSONObject getJsonResponse() throws IOException{
+  public JSONObject getJsonResponse() throws IOException, JSONException{
     doNetworkRequest();
-    return new JSONObject();
+    JSONObject retval = new JSONObject(mResponse);
+    return retval;
   }
 
   public String getStringResponse() throws IOException{
