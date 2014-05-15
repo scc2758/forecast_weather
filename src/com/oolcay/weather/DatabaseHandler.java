@@ -70,4 +70,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     return locations;
   }
+
+  Location getLocation(int id) {
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    Cursor cursor = db.query(TABLE_LOCATIONS, new String[] { KEY_ID,
+        KEY_NAME, KEY_LAT, KEY_LON }, KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+
+    if (cursor != null)
+      cursor.moveToFirst();
+
+    Location location = new Location();
+    location.setId(Integer.parseInt(cursor.getString(0)));
+    location.setName(cursor.getString(1));
+    location.setLat(cursor.getDouble(2));
+    location.setLon(cursor.getDouble(3));
+
+    return location;
+  }
+
 }
