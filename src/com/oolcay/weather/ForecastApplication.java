@@ -3,14 +3,26 @@ package com.oolcay.weather;
 import android.app.Application;
 import com.oolcay.weather.Models.Location;
 
-public class ForecastApplication extends Application{
-  private Location mCurrentLocation = null;
+import java.util.List;
 
-  public Location getCurrentLocation(){
+public class ForecastApplication extends Application{
+
+  private int mCurrentLocation = -1;
+  private List<Location> mAllLocations = null;
+
+  public int getCurrentLocation(){
     return mCurrentLocation;
   }
 
-  public void setCurrentLocation(Location location){
-    mCurrentLocation = location;
+  public void setCurrentLocation(int id){
+    mCurrentLocation = id;
+  }
+
+  public List<Location> getAllLocations(){
+    return mAllLocations;
+  }
+
+  public void setAllLocations(List<Location> locations){
+    mAllLocations = locations;
   }
 }
