@@ -1,5 +1,6 @@
 package com.oolcay.weather;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Network.Request;
@@ -21,7 +24,7 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
-  private ForecastApplication state;
+    private ForecastApplication state;
   private DatabaseHandler mDatabaseHandler;
   private double mLat;
   private double mLon;
@@ -33,13 +36,23 @@ public class MainActivity extends FragmentActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    Context context = getApplicationContext();
+
     mViewPager = new ViewPager(this);
     mViewPager.setId(R.id.viewPager);
-    setContentView(mViewPager);
+    setContentView(R.layout.main);
 
+    FrameLayout layout = (FrameLayout) findViewById(R.id.fragmentContainer);
+    layout.addView(mViewPager);
+
+
+
+    mDatabaseHandler = new DatabaseHandler(context);
     mLocations = mDatabaseHandler.getAllLocations();
 
     FragmentManager fragmentManager = getSupportFragmentManager();
+
+    state = ((ForecastApplication) getApplicationContext());
 
     mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
       @Override
@@ -47,14 +60,37 @@ public class MainActivity extends FragmentActivity {
         Location location = mLocations.get(i);
           LocationFragment.newInstance(i);
         return LocationFragment.newInstance(location.getId());
-      }
 
+      }
       @Override
       public int getCount() {
         return mLocations.size();
       }
     });
 
+    ConfigHelper configHelper = new ConfigHelper(context);
+
+    //int locationId = getIntent().getIntExtra(LocationFragment.EXTRA_LOCATION_ID, -1);
+
+    Location location = state.getCurrentLocation();
+
+
+
+    if (mLocations.size() == 0){
+
+    }else{
+      if (location == null){
+        state.setCurrentLocation(mDatabaseHandler.getLocation(configHelper.getHomeLocation()));
+      }
+    }
+
+    for (int x=0; x< mLocations.size(); x++){
+      if (mLocations.get(x).getId() == state.getCurrentLocation().getId()){
+        mViewPager.setCurrentItem(x);
+        break;
+      }
+    }
+    /*
     state = ((ForecastApplication) getApplicationContext());
     Location location = state.getCurrentLocation();
 
@@ -77,13 +113,12 @@ public class MainActivity extends FragmentActivity {
     Toast.makeText(this, " " + state.getCurrentLocation().getName(), Toast.LENGTH_LONG).show();
 
     GetWeather getWeather = new GetWeather();
-    getWeather.execute();
+    getWeather.execute();*/
   }
 
   @Override
   public void onResume(){
     super.onResume();
-    state = ((ForecastApplication) getApplicationContext());
   }
 
   private void handleResponse(JSONObject results){
