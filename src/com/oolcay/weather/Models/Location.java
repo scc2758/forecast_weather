@@ -27,6 +27,10 @@ public class Location {
     return mLon;
   }
 
+  public int getId(){
+    return mId;
+  }
+
   public void setId(int id){
     mId = id;
   }
