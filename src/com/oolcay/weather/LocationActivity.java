@@ -35,7 +35,7 @@ public class LocationActivity extends ListActivity {
     List<String> locationsArry = new ArrayList<String>();
 
     for (int x=0; x< locations.size(); x++){
-      locationsArry.add(locations.get(0).getName());
+      locationsArry.add(locations.get(x).getName());
       setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locationsArry ));
 
     }
