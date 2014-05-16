@@ -22,8 +22,10 @@ public class LocationFragment extends Fragment {
     int id = getArguments().getInt(LocationFragment.EXTRA_LOCATION_ID);
 
     Context context = getActivity();
-    DatabaseHandler databaseHandler = new DatabaseHandler(context);
-    mLocation = databaseHandler.getLocation(id);
+
+    ForecastApplication state = (ForecastApplication)context.getApplicationContext();
+
+    mLocation = state.getAllLocations().get(id);
 
   }
 

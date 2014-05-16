@@ -19,8 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 public class MainActivity extends FragmentActivity {
 
   private ForecastApplication state;
@@ -29,13 +27,13 @@ public class MainActivity extends FragmentActivity {
   private double mLon;
 
   private ViewPager mViewPager;
-  private List<Location> mLocations;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     Context context = getApplicationContext();
+    state = ((ForecastApplication) getApplicationContext());
 
     mViewPager = new ViewPager(this);
     mViewPager.setId(R.id.viewPager);
@@ -45,40 +43,36 @@ public class MainActivity extends FragmentActivity {
     layout.addView(mViewPager);
 
     mDatabaseHandler = new DatabaseHandler(context);
-    mLocations = mDatabaseHandler.getAllLocations();
+    state.setAllLocations(mDatabaseHandler.getAllLocations());
 
     FragmentManager fragmentManager = getSupportFragmentManager();
-
-    state = ((ForecastApplication) getApplicationContext());
 
     mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
       @Override
       public Fragment getItem(int i) {
-        Location location = mLocations.get(i);
-          LocationFragment.newInstance(i);
-        return LocationFragment.newInstance(location.getId());
+        return LocationFragment.newInstance(i);
 
       }
       @Override
       public int getCount() {
-        return mLocations.size();
+        return state.getAllLocations().size();
       }
     });
 
     ConfigHelper configHelper = new ConfigHelper(context);
 
-    Location location = state.getCurrentLocation();
+    int locationId = state.getCurrentLocation();
 
-    if (mLocations.size() == 0){
+    if (state.getAllLocations().size() == 0){
 
     }else{
-      if (location == null){
-        state.setCurrentLocation(mDatabaseHandler.getLocation(configHelper.getHomeLocation()));
+      if (locationId == -1){
+        state.setCurrentLocation(configHelper.getHomeLocation());
       }
     }
 
-    for (int x=0; x< mLocations.size(); x++){
-      if (mLocations.get(x).getId() == state.getCurrentLocation().getId()){
+    for (int x=0; x< state.getAllLocations().size(); x++){
+      if (state.getAllLocations().get(x).getId() == state.getCurrentLocation()){
         mViewPager.setCurrentItem(x);
         break;
       }
@@ -88,6 +82,7 @@ public class MainActivity extends FragmentActivity {
   @Override
   public void onResume(){
     super.onResume();
+    state = ((ForecastApplication) getApplicationContext());
   }
 
   private void handleResponse(JSONObject results){
