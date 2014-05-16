@@ -9,6 +9,8 @@ import com.oolcay.weather.Models.Location;
 
 public class LocationFragment extends Fragment {
 
+  public static final String EXTRA_LOCATION_ID = "extra_location_id";
+
   private Location mLocation;
 
   @Override
@@ -21,6 +23,16 @@ public class LocationFragment extends Fragment {
       Bundle savedInstanceState){
     View v = inflater.inflate(R.layout.location_fragment, parent, false);
     return v;
+  }
+
+  public static LocationFragment newInstance(int locationId){
+    Bundle args = new Bundle();
+    args.putInt(EXTRA_LOCATION_ID, locationId);
+
+    LocationFragment fragment = new LocationFragment();
+    fragment.setArguments(args);
+
+    return fragment;
   }
 
 }
