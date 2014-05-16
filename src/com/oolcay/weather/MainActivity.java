@@ -2,30 +2,19 @@ package com.oolcay.weather;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-import com.oolcay.weather.Models.Location;
-import com.oolcay.weather.Network.Request;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends FragmentActivity {
 
   private ForecastApplication state;
   private DatabaseHandler mDatabaseHandler;
-  private double mLat;
-  private double mLon;
-
   private ViewPager mViewPager;
 
   @Override
@@ -83,6 +72,12 @@ public class MainActivity extends FragmentActivity {
   public void onResume(){
     super.onResume();
     state = ((ForecastApplication) getApplicationContext());
+  }
+
+  @Override
+  public void onPause(){
+    super.onPause();
+    state.setCurrentLocation(state.getAllLocations().get(mViewPager.getCurrentItem()).getId());
   }
 
   public void openLocations(View v){
