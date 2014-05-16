@@ -85,45 +85,8 @@ public class MainActivity extends FragmentActivity {
     state = ((ForecastApplication) getApplicationContext());
   }
 
-  private void handleResponse(JSONObject results){
-
-    if (results == null){
-      Toast.makeText(this, "Error Loading Weather Data", Toast.LENGTH_SHORT);
-    }
-
-    try {
-     JSONObject hourly = results.getJSONObject("hourly");
-     JSONArray hourly_data = hourly.getJSONArray("data");
-
-    } catch (JSONException e) {
-      Log.e("WEATHER_APP: ", e.toString());
-    }
-  }
-
   public void openLocations(View v){
     Intent intent = new Intent(this, LocationActivity.class);
     startActivity(intent);
-  }
-
-  public class GetWeather extends AsyncTask<Object, Void, JSONObject> {
-
-    @Override
-    protected JSONObject doInBackground(Object... params) {
-      JSONObject weatherData = null;
-      try{
-        Request request = new Request();
-        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mLat + "," + mLon);
-        weatherData = request.getJsonResponse();
-      }catch (Exception e){
-        Log.e("WEATHER", e.toString());
-      }
-      return weatherData;
-    }
-
-    @Override
-    protected void onPostExecute(JSONObject result){
-      if (result != null)
-        handleResponse(result);
-    }
   }
 }
