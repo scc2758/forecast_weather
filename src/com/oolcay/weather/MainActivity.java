@@ -12,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Network.Request;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
-    private ForecastApplication state;
+  private ForecastApplication state;
   private DatabaseHandler mDatabaseHandler;
   private double mLat;
   private double mLon;
@@ -44,8 +43,6 @@ public class MainActivity extends FragmentActivity {
 
     FrameLayout layout = (FrameLayout) findViewById(R.id.fragmentContainer);
     layout.addView(mViewPager);
-
-
 
     mDatabaseHandler = new DatabaseHandler(context);
     mLocations = mDatabaseHandler.getAllLocations();
@@ -70,11 +67,7 @@ public class MainActivity extends FragmentActivity {
 
     ConfigHelper configHelper = new ConfigHelper(context);
 
-    //int locationId = getIntent().getIntExtra(LocationFragment.EXTRA_LOCATION_ID, -1);
-
     Location location = state.getCurrentLocation();
-
-
 
     if (mLocations.size() == 0){
 
@@ -90,30 +83,6 @@ public class MainActivity extends FragmentActivity {
         break;
       }
     }
-    /*
-    state = ((ForecastApplication) getApplicationContext());
-    Location location = state.getCurrentLocation();
-
-    mDatabaseHandler = new DatabaseHandler(this);
-
-    ConfigHelper configHelper = new ConfigHelper(this);
-
-
-    if (mLocations.size() == 0){
-
-    }else{
-      if (location == null){
-        state.setCurrentLocation(mDatabaseHandler.getLocation(configHelper.getHomeLocation()));
-      }
-    }
-
-    mLat = state.getCurrentLocation().getLat();
-    mLon = state.getCurrentLocation().getLon();
-
-    Toast.makeText(this, " " + state.getCurrentLocation().getName(), Toast.LENGTH_LONG).show();
-
-    GetWeather getWeather = new GetWeather();
-    getWeather.execute();*/
   }
 
   @Override

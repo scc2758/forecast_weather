@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.oolcay.weather.Models.Location;
 
 public class LocationFragment extends Fragment {
@@ -36,7 +35,6 @@ public class LocationFragment extends Fragment {
     TextView textView = (TextView)v.findViewById(R.id.summary);
     textView.setText(mLocation.getName());
 
-
     return v;
   }
 
@@ -49,5 +47,4 @@ public class LocationFragment extends Fragment {
 
     return fragment;
   }
-
 }
