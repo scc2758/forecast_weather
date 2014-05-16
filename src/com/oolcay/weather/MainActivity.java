@@ -1,9 +1,13 @@
 package com.oolcay.weather;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -15,17 +19,42 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
   private ForecastApplication state;
   private DatabaseHandler mDatabaseHandler;
   private double mLat;
   private double mLon;
 
+  private ViewPager mViewPager;
+  private List<Location> mLocations;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.main);
+
+    mViewPager = new ViewPager(this);
+    mViewPager.setId(R.id.viewPager);
+    setContentView(mViewPager);
+
+    mLocations = mDatabaseHandler.getAllLocations();
+
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
+    mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+      @Override
+      public Fragment getItem(int i) {
+        Location location = mLocations.get(i);
+          LocationFragment.newInstance(i);
+        return LocationFragment.newInstance(location.getId());
+      }
+
+      @Override
+      public int getCount() {
+        return mLocations.size();
+      }
+    });
+
     state = ((ForecastApplication) getApplicationContext());
     Location location = state.getCurrentLocation();
 
@@ -33,9 +62,8 @@ public class MainActivity extends Activity {
 
     ConfigHelper configHelper = new ConfigHelper(this);
 
-    List <Location> locations = mDatabaseHandler.getAllLocations();
 
-    if (locations.size() == 0){
+    if (mLocations.size() == 0){
 
     }else{
       if (location == null){
