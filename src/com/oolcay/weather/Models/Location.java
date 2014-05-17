@@ -6,9 +6,11 @@ public class Location {
   private String mName;
   private double mLat;
   private double mLon;
-  private int mLastUpdated;
+  private long mLastUpdated;
 
-  public Location(){}
+  public Location(){
+    mLastUpdated = -1;
+  }
 
   public Location(String name, double lat, double lon){
     mName = name;
@@ -16,7 +18,7 @@ public class Location {
     mLon = lon;
   }
 
-  public int getLastUpdated(){
+  public long getLastUpdated(){
     return mLastUpdated;
   }
 
@@ -36,7 +38,7 @@ public class Location {
     return mId;
   }
 
-  public void setLastUpdated(int updated){
+  public void setLastUpdated(long updated){
     mLastUpdated = updated;
   }
 
