@@ -2,14 +2,21 @@ package com.oolcay.weather;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.oolcay.weather.Network.Request;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends FragmentActivity {
 
@@ -84,4 +91,47 @@ public class MainActivity extends FragmentActivity {
     Intent intent = new Intent(this, LocationActivity.class);
     startActivity(intent);
   }
+  private void handleResponse(JSONObject results, int id ){
+
+    try {
+      JSONObject hourly = results.getJSONObject("currently");
+      String temperature = hourly.getString("temperature");
+
+    } catch (JSONException e) {
+      Log.e("WEATHER_APP: ", e.toString());
+    }
+  }
+
+  public class GetWeather extends AsyncTask<Object, Void, JSONObject> {
+
+    private double mLat;
+    private double mLon;
+    private int mId;
+
+    GetWeather(double lat, double lon, int id){
+      mId = id;
+      mLon = lon;
+      mLat = lat;
+    }
+
+    @Override
+    protected JSONObject doInBackground(Object... params) {
+      JSONObject weatherData = null;
+      try{
+        Request request = new Request();
+        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mLat + "," + mLon);
+        weatherData = request.getJsonResponse();
+      }catch (Exception e){
+        Log.e("WEATHER", e.toString());
+      }
+      return weatherData;
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject result){
+      if (result != null)
+        handleResponse(result, mId);
+    }
+  }
+
 }
