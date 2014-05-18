@@ -7,6 +7,15 @@ public class Location {
   private double mLat;
   private double mLon;
   private long mLastUpdated;
+  private Weather mWeather;
+
+  public Weather getWeather() {
+    return mWeather;
+  }
+
+  public void setWeather(Weather weather) {
+    mWeather = weather;
+  }
 
   public Location(){
     mLastUpdated = -1;
