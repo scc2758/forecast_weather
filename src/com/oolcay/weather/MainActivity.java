@@ -10,12 +10,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.oolcay.weather.Models.Location;
+import com.oolcay.weather.Models.Weather;
 import com.oolcay.weather.Network.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,7 +66,25 @@ public class MainActivity extends FragmentActivity {
     state.setCurrentLocation(state.getAllLocations().get(mViewPager.getCurrentItem()).getId());
   }
 
-  public void openLocations(View v){
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.main, menu);
+    return super.onCreateOptionsMenu(menu);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_locations:
+        openLocations();
+        return true;
+       default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  public void openLocations(){
     Intent intent = new Intent(this, LocationActivity.class);
     startActivity(intent);
   }
@@ -128,16 +150,18 @@ public class MainActivity extends FragmentActivity {
           double lon = mLocations.get(x).getLon();
 
           Request request = new Request();
-
           request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + lat + "," + lon);
-
           weatherData = request.getJsonResponse();
 
           JSONObject hourly = weatherData.getJSONObject("currently");
-
           String temperature = hourly.getString("temperature");
 
-          mLocations.get(x).setLastUpdated(System.currentTimeMillis()/1000L);
+          Weather weather = new Weather();
+          weather.setTemperature(Double.parseDouble(temperature));
+          weather.setSummary(hourly.getString("summary"));
+
+          mLocations.get(x).setWeather(weather);
+          mLocations.get(x).setLastUpdated(System.currentTimeMillis() / 1000L);
 
         }catch (Exception e){
           Log.e("WEATHER", e.toString());
