@@ -5,12 +5,6 @@
               android:layout_height="fill_parent"
         >
 
-    <Button android:id="@+id/launchLocations"
-            android:onClick="openLocations"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Locations"/>
-
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
