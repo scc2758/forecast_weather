@@ -1,18 +1,15 @@
 package com.oolcay.weather;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.oolcay.weather.Models.Location;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.oolcay.weather.Models.Weather;
+
 
 public class LocationFragment extends Fragment {
 
@@ -29,9 +26,7 @@ public class LocationFragment extends Fragment {
     int id = getArguments().getInt(LocationFragment.EXTRA_LOCATION_ID);
 
     mContext = getActivity();
-
     mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
-
     mLocation = mForecastApplication.getAllLocations().get(id);
 
   }
@@ -41,8 +36,16 @@ public class LocationFragment extends Fragment {
       Bundle savedInstanceState){
     View v = inflater.inflate(R.layout.location_fragment, parent, false);
 
-    TextView textView = (TextView)v.findViewById(R.id.summary);
+    TextView textView = (TextView)v.findViewById(R.id.location);
     textView.setText(mLocation.getName());
+
+    Weather weather = mLocation.getWeather();
+
+    textView = (TextView)v.findViewById(R.id.temp);
+    textView.setText(" " + weather.getTemperature());
+
+    textView = (TextView)v.findViewById(R.id.summary);
+    textView.setText(" " + weather.getSummary());
 
     return v;
   }
