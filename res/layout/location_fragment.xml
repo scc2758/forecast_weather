@@ -8,16 +8,21 @@
     <TextView android:id="@+id/location"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:textSize="24sp"/>
+              android:textSize="24sp"
+              android:gravity="center"/>
+
+    <TextView android:id="@+id/temp"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:textSize="60sp"
+              android:fontFamily="sans-serif-thin"/>
 
     <TextView android:id="@+id/summary"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
+              android:gravity="center"
               android:text="Test"/>
-
-    <TextView android:id="@+id/temp"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
 
     <ExpandableListView
             android:layout_width="fill_parent"
