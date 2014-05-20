@@ -1,14 +1,20 @@
 package com.oolcay.weather;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.LineGraphView;
 import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Models.Weather;
+import org.json.JSONObject;
 
 
 public class LocationFragment extends Fragment {
@@ -46,6 +52,28 @@ public class LocationFragment extends Fragment {
 
     textView = (TextView)v.findViewById(R.id.summary);
     textView.setText(" " + weather.getSummary());
+
+    GraphView.GraphViewData[] points = new GraphView.GraphViewData[0];
+    int length = weather.getHourly().size();
+    points = new GraphView.GraphViewData[length];
+    for (int x = 0; x < length; x++){
+      int time = weather.getHourly().get(x).getTime();
+      double temp = weather.getHourly().get(x).getTemperature();
+      points[x] = new GraphView.GraphViewData(time, temp);
+    }
+
+    GraphView graphView = new LineGraphView(
+        mContext
+        , "Hourly Tempature" // heading
+    );
+
+    graphView.getGraphViewStyle().setNumHorizontalLabels(1);
+    graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT);
+    graphView.getGraphViewStyle().setNumVerticalLabels(5);
+    graphView.setHorizontalLabels(new String[] {"12:01 am", "12:00 pm", "11:59 pm"});
+    graphView.addSeries(new GraphViewSeries(points));
+    LinearLayout layout = (LinearLayout) v.findViewById(R.id.graph);
+    layout.addView(graphView);
 
     return v;
   }
