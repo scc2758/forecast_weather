@@ -15,7 +15,7 @@ public class Weather{
   public final static String FOG = "fog";
   public final static String CLOUDY = "cloudy";
   public final static String PARTLY_CLOUDY_DAY = "partly-cloudy_day";
-  public final static String PARTLY_CLOUDY_NIGHT = "partly-cloudly-night";
+  public final static String PARTLY_CLOUDY_NIGHT = "partly-cloudy-night";
 
   private String mSummary;
   private double mTemperature;
