@@ -14,8 +14,6 @@ import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Models.Weather;
-import org.json.JSONObject;
-
 
 public class LocationFragment extends Fragment {
 
@@ -53,8 +51,8 @@ public class LocationFragment extends Fragment {
     textView = (TextView)v.findViewById(R.id.summary);
     textView.setText(" " + weather.getSummary());
 
-    GraphView.GraphViewData[] points = new GraphView.GraphViewData[0];
-    int length = weather.getHourly().size();
+    GraphView.GraphViewData[] points;
+    int length = 24; //weather for the next 24 hours
     points = new GraphView.GraphViewData[length];
     for (int x = 0; x < length; x++){
       int time = weather.getHourly().get(x).getTime();
