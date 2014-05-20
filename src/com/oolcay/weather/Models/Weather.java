@@ -6,6 +6,7 @@ public class Weather{
 
   private String mSummary;
   private double mTemperature;
+  private double mFeelsLike;
   private double mPrecipProbability;
   private List<Weather> hourly;
 
@@ -39,5 +40,13 @@ public class Weather{
 
   public void setHourly(List<Weather> hourly) {
     this.hourly = hourly;
+  }
+
+  public double getFeelsLike() {
+    return mFeelsLike;
+  }
+
+  public void setFeelsLike(double feelsLike) {
+    mFeelsLike = feelsLike;
   }
 }
