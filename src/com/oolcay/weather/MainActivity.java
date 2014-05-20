@@ -16,14 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Models.Weather;
 import com.oolcay.weather.Network.Request;
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
@@ -51,7 +50,6 @@ public class MainActivity extends FragmentActivity {
 
     GetWeather getWeather = new GetWeather(mDatabaseHandler.getAllLocations());
     getWeather.execute();
-
   }
 
   @Override
@@ -153,16 +151,33 @@ public class MainActivity extends FragmentActivity {
           request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + lat + "," + lon);
           weatherData = request.getJsonResponse();
 
-          JSONObject hourly = weatherData.getJSONObject("currently");
-          String temperature = hourly.getString("temperature");
+          JSONObject currently = weatherData.getJSONObject("currently");
+          String temperature = currently.getString("temperature");
 
           Weather weather = new Weather();
           weather.setTemperature(Double.parseDouble(temperature));
-          weather.setSummary(hourly.getString("summary"));
+          weather.setSummary(currently.getString("summary"));
 
           mLocations.get(x).setWeather(weather);
           mLocations.get(x).setLastUpdated(System.currentTimeMillis() / 1000L);
 
+          //Populate Locations w/ Hourly Weather Data
+          JSONObject hourly = weatherData.getJSONObject("hourly");
+          JSONArray hourly_data = hourly.getJSONArray("data");
+
+          int length = hourly_data.length();
+
+          List<Weather> tmpList = new ArrayList<Weather>();
+
+          for (int i = 0; i < length; i++){
+            JSONObject data_point =  hourly_data.getJSONObject(i);
+            Weather weatherItem = new Weather();
+            weatherItem.setTemperature(data_point.getDouble("temperature"));
+            weatherItem.setTime(data_point.getInt("time"));
+            tmpList.add(weatherItem);
+          }
+
+          mLocations.get(x).getWeather().setHourly(tmpList);
         }catch (Exception e){
           Log.e("WEATHER", e.toString());
         }
