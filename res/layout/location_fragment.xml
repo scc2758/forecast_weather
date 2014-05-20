@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+    <LinearLayout
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:background="#EAEAEA">
 
     <TextView android:id="@+id/location"
               android:layout_width="fill_parent"
@@ -26,7 +32,7 @@
 
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="200sp"
             android:id="@+id/graph"/>
 
     <ExpandableListView
@@ -35,4 +41,5 @@
             android:id="@+id/hourlyListView"
             android:layout_gravity="left|center_vertical"/>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
