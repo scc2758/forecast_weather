@@ -1,8 +1,21 @@
 package com.oolcay.weather.Models;
 
+import android.R;
+
 import java.util.List;
 
 public class Weather{
+
+  public final static String CLEAR_DAY = "clear-day";
+  public final static String CLEAR_NIGHT = "clear-night";
+  public final static String RAIN = "rain";
+  public final static String SNOW = "snow";
+  public final static String SLEET = "sleet";
+  public final static String WIND = "wind";
+  public final static String FOG = "fog";
+  public final static String CLOUDY = "cloudy";
+  public final static String PARTLY_CLOUDY_DAY = "partly-cloudy_day";
+  public final static String PARTLY_CLOUDY_NIGHT = "partly-cloudly-night";
 
   private String mSummary;
   private double mTemperature;
