@@ -1,7 +1,5 @@
 package com.oolcay.weather.Models;
 
-import android.R;
-
 import java.util.List;
 
 public class Weather{
@@ -23,6 +21,7 @@ public class Weather{
   private double mPrecipProbability;
   private List<Weather> hourly;
   private int mTime;
+  private String mIcon;
 
   public String getSummary() {
     return mSummary;
@@ -70,5 +69,13 @@ public class Weather{
 
   public void setTime(int time) {
     mTime = time;
+  }
+
+  public String getIcon() {
+    return mIcon;
+  }
+
+  public void setIcon(String icon) {
+    mIcon = icon;
   }
 }
