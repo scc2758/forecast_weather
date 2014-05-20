@@ -9,6 +9,7 @@ public class Weather{
   private double mFeelsLike;
   private double mPrecipProbability;
   private List<Weather> hourly;
+  private int mTime;
 
   public String getSummary() {
     return mSummary;
@@ -48,5 +49,13 @@ public class Weather{
 
   public void setFeelsLike(double feelsLike) {
     mFeelsLike = feelsLike;
+  }
+
+  public int getTime() {
+    return mTime;
+  }
+
+  public void setTime(int time) {
+    mTime = time;
   }
 }
