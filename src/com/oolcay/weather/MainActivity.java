@@ -2,6 +2,7 @@ package com.oolcay.weather;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import com.oolcay.weather.Models.Location;
@@ -50,6 +48,13 @@ public class MainActivity extends FragmentActivity {
 
     GetWeather getWeather = new GetWeather(mDatabaseHandler.getAllLocations());
     getWeather.execute();
+
+    //TODO: use window size instead
+    Display display = getWindowManager().getDefaultDisplay();
+    Point size = new Point();
+    display.getSize(size);
+    state.setHeight(size.y);
+
   }
 
   @Override
@@ -61,7 +66,11 @@ public class MainActivity extends FragmentActivity {
   @Override
   public void onPause(){
     super.onPause();
-    state.setCurrentLocation(state.getAllLocations().get(mViewPager.getCurrentItem()).getId());
+    try{
+      state.setCurrentLocation(state.getAllLocations().get(mViewPager.getCurrentItem()).getId());
+    }catch (Exception e){
+
+    }
   }
 
   @Override

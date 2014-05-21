@@ -40,13 +40,19 @@ public class LocationFragment extends Fragment {
       Bundle savedInstanceState){
     View v = inflater.inflate(R.layout.location_fragment, parent, false);
 
+    LinearLayout firstPage = (LinearLayout)v.findViewById(R.id.onePage);
+
+    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) firstPage.getLayoutParams();
+    params.height = mForecastApplication.getHeight();
+    firstPage.setLayoutParams(params);
+
     TextView textView = (TextView)v.findViewById(R.id.location);
     textView.setText(mLocation.getName());
 
     Weather weather = mLocation.getWeather();
 
     textView = (TextView)v.findViewById(R.id.temp);
-    textView.setText(" " + weather.getTemperature());
+    textView.setText(" " + Math.round(weather.getTemperature()));
 
     textView = (TextView)v.findViewById(R.id.summary);
     textView.setText(" " + weather.getSummary());
@@ -68,7 +74,7 @@ public class LocationFragment extends Fragment {
     graphView.getGraphViewStyle().setNumHorizontalLabels(1);
     graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT);
     graphView.getGraphViewStyle().setNumVerticalLabels(5);
-    graphView.setHorizontalLabels(new String[] {"12:01 am", "12:00 pm", "11:59 pm"});
+    //graphView.setHorizontalLabels(new String[] {"12:01 am", "12:00 pm", "11:59 pm"});
     graphView.addSeries(new GraphViewSeries(points));
     LinearLayout layout = (LinearLayout) v.findViewById(R.id.graph);
     layout.addView(graphView);
