@@ -82,6 +82,12 @@ public class LocationActivity extends ListActivity {
               InputMethodManager.HIDE_NOT_ALWAYS);
           return true;
         }
+
+        if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+          Toast.makeText(mContext, "hi", Toast.LENGTH_LONG).show();
+          findLocation(addLocationEditText.getText().toString());
+          return true;
+        }
         return false;
       }
     });
