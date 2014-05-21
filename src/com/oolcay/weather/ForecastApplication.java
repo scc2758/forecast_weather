@@ -9,6 +9,7 @@ public class ForecastApplication extends Application{
 
   private int mCurrentLocation = -1;
   private List<Location> mAllLocations = null;
+  private int mHeight;
 
   public int getCurrentLocation(){
     return mCurrentLocation;
@@ -24,5 +25,13 @@ public class ForecastApplication extends Application{
 
   public void setAllLocations(List<Location> locations){
     mAllLocations = locations;
+  }
+
+  public int getHeight() {
+    return mHeight;
+  }
+
+  public void setHeight(int height) {
+    mHeight = height;
   }
 }
