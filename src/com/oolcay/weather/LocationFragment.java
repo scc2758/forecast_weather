@@ -40,8 +40,7 @@ public class LocationFragment extends Fragment {
       Bundle savedInstanceState){
     View v = inflater.inflate(R.layout.location_fragment, parent, false);
 
-    LinearLayout firstPage = (LinearLayout)v.findViewById(R.id.onePage);
-
+     LinearLayout firstPage = (LinearLayout)v.findViewById(R.id.onePage);
     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) firstPage.getLayoutParams();
     params.height = mForecastApplication.getHeight();
     firstPage.setLayoutParams(params);
@@ -52,10 +51,10 @@ public class LocationFragment extends Fragment {
     Weather weather = mLocation.getWeather();
 
     textView = (TextView)v.findViewById(R.id.temp);
-    textView.setText(" " + Math.round(weather.getTemperature()));
+    textView.setText(Integer.toString((int)Math.round(weather.getTemperature())) + (char) 0x00B0);
 
     textView = (TextView)v.findViewById(R.id.summary);
-    textView.setText(" " + weather.getSummary());
+    textView.setText(weather.getSummary());
 
     GraphView.GraphViewData[] points;
     int length = 24; //weather for the next 24 hours
