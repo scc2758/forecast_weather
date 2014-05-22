@@ -18,6 +18,7 @@ import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Models.Weather;
 import com.oolcay.weather.Network.Request;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -175,36 +176,21 @@ public class MainActivity extends FragmentActivity {
           //Populate Locations w/ Hourly Weather Data
           JSONObject hourly = weatherData.getJSONObject("hourly");
           JSONArray hourly_data = hourly.getJSONArray("data");
-
           length = hourly_data.length();
           tmpList = new ArrayList<Weather>();
-
           for (int i = 0; i < length; i++){
-            JSONObject data_point =  hourly_data.getJSONObject(i);
-            Weather weatherItem = new Weather();
-            weatherItem.setTemperature(data_point.getDouble("temperature"));
-            weatherItem.setTime(data_point.getInt("time"));
-            tmpList.add(weatherItem);
+            tmpList.add(createWeather(hourly_data.getJSONObject(i)));
           }
-
           mLocations.get(x).getWeather().setHourly(tmpList);
 
           //get daily weather data
-          //TODO create method for creating getting data from json to weather class
           JSONObject daily = weatherData.getJSONObject("daily");
           JSONArray daily_data = weatherData.getJSONArray("data");
-
           tmpList.clear();
           length = daily_data.length();
-
           for (int i = 0; i < length; i++) {
-            JSONObject data_point = daily_data.getJSONObject(i);
-            Weather weatherItem = new Weather();
-            weatherItem.setTemperature(data_point.getDouble("temperature"));
-            weatherItem.setTime(data_point.getInt("time"));
-            tmpList.add(weatherItem);
+              tmpList.add(createWeather(daily_data.getJSONObject(i)));
           }
-
           mLocations.get(x).getWeather().setDaily(tmpList);
 
         }catch (Exception e){
@@ -217,6 +203,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPostExecute(List<Location> list){
         handleResponse(list);
+    }
+
+    private Weather createWeather(JSONObject dataPoint) throws JSONException{
+      Weather weather = new Weather();
+      weather.setTemperature(dataPoint.getDouble("temperature"));
+      weather.setTime(dataPoint.getInt("time"));
+      return weather;
     }
   }
 }
