@@ -19,7 +19,8 @@ public class Weather{
   private double mTemperature;
   private double mFeelsLike;
   private double mPrecipProbability;
-  private List<Weather> hourly;
+  private List<Weather> mHourly;
+  private List<Weather> mDaily;
   private int mTime;
   private String mIcon;
 
@@ -48,11 +49,11 @@ public class Weather{
   }
 
   public List<Weather> getHourly() {
-    return hourly;
+    return mHourly;
   }
 
   public void setHourly(List<Weather> hourly) {
-    this.hourly = hourly;
+    this.mHourly = hourly;
   }
 
   public double getFeelsLike() {
@@ -77,5 +78,13 @@ public class Weather{
 
   public void setIcon(String icon) {
     mIcon = icon;
+  }
+
+  public List<Weather> getDaily() {
+    return mDaily;
+  }
+
+  public void setDaily(List<Weather> daily) {
+    mDaily = daily;
   }
 }
