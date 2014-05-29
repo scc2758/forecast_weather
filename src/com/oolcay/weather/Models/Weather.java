@@ -22,15 +22,15 @@ public class Weather{
   private int mTime;
   private String mIcon;
 
-  private double mTemperature;    //current, minute, hour
+  private double mTemperature;
   private double mFeelsLike;
-  private double temperatureMin;
-  private int temperatureMinTime;
-  private double temperatureMax;
-  private int temperatureMaxTime;
+  private double mTemperatureMin;
+  private int mTemperatureMinTime;
+  private double mTemperatureMax;
+  private int mTemperatureMaxTime;
 
   private double mPrecipProbability;
-  private String precipType;
+  private String mPrecipType;
 
   private List<Weather> mHourly;
   private List<Weather> mDaily;
@@ -101,42 +101,42 @@ public class Weather{
   }
 
   public double getTemperatureMin() {
-    return temperatureMin;
+    return mTemperatureMin;
   }
 
   public void setTemperatureMin(double temperatureMin) {
-    this.temperatureMin = temperatureMin;
+    mTemperatureMin = temperatureMin;
   }
 
   public int getTemperatureMinTime() {
-    return temperatureMinTime;
+    return mTemperatureMinTime;
   }
 
   public void setTemperatureMinTime(int temperatureMinTime) {
-    this.temperatureMinTime = temperatureMinTime;
+    mTemperatureMinTime = temperatureMinTime;
   }
 
   public double getTemperatureMax() {
-    return temperatureMax;
+    return mTemperatureMax;
   }
 
   public void setTemperatureMax(double temperatureMax) {
-    this.temperatureMax = temperatureMax;
+    mTemperatureMax = temperatureMax;
   }
 
   public int getTemperatureMaxTime() {
-    return temperatureMaxTime;
+    return mTemperatureMaxTime;
   }
 
   public void setTemperatureMaxTime(int temperatureMaxTime) {
-    this.temperatureMaxTime = temperatureMaxTime;
+    mTemperatureMaxTime = temperatureMaxTime;
   }
 
   public String getPrecipType() {
-    return precipType;
+    return mPrecipType;
   }
 
   public void setPrecipType(String precipType) {
-    this.precipType = precipType;
+    mPrecipType = precipType;
   }
 }
