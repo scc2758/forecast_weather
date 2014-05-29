@@ -67,7 +67,7 @@ public class LocationActivity extends ListActivity {
         databaseHandler.addLocation(location);
       }
     } catch (IOException e) {
-      Log.e("WEATHER", e.toString());
+      Log.e(getString(R.string.error_tag), e.toString());
     }
   }
   private void setupListeners(){

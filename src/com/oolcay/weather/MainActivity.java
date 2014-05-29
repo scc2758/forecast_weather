@@ -194,7 +194,7 @@ public class MainActivity extends FragmentActivity {
           mLocations.get(x).getWeather().setDaily(dailyWeatherList);
 
         }catch (Exception e){
-          Log.e("WEATHER", e.toString());
+          Log.e(getString(R.string.error_tag), e.toString());
         }
       }
       return mLocations;
@@ -207,11 +207,14 @@ public class MainActivity extends FragmentActivity {
 
     private Weather createWeather(JSONObject dataPoint) throws JSONException{
       Weather weather = new Weather();
+
       try {
       weather.setTemperature(dataPoint.getDouble("temperature"));
       } catch (Exception e){
-
+        Log.d(getString(R.string.error_tag), getString(R.string.no_data_in_json));
       }
+
+
       weather.setTime(dataPoint.getInt("time"));
       return weather;
     }
