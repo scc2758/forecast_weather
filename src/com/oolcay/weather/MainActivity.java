@@ -168,6 +168,7 @@ public class MainActivity extends FragmentActivity {
           Weather weather = new Weather();
           weather.setTemperature(Double.parseDouble(temperature));
           weather.setSummary(currently.getString("summary"));
+          weather.setIcon(currently.getString("icon"));
 
           mLocations.get(x).setWeather(weather);
           mLocations.get(x).setLastUpdated(System.currentTimeMillis() / 1000L);
@@ -214,6 +215,11 @@ public class MainActivity extends FragmentActivity {
         Log.d(getString(R.string.error_tag), getString(R.string.no_data_in_json));
       }
 
+      try {
+        weather.setIcon(dataPoint.getString("icon"));
+      } catch (Exception e){
+        Log.d(getString(R.string.error_tag), getString(R.string.no_data_in_json));
+      }
 
       weather.setTime(dataPoint.getInt("time"));
       return weather;

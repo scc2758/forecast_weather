@@ -1,12 +1,15 @@
 package com.oolcay.weather;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
@@ -55,6 +58,12 @@ public class LocationFragment extends Fragment {
 
     textView = (TextView)v.findViewById(R.id.summary);
     textView.setText(weather.getSummary());
+
+    ImageView imageView = (ImageView)v.findViewById(R.id.weather_icon);
+    String resourceId = weather.getIcon().replaceAll("-", "_");
+    Log.e("helpme", resourceId);
+
+    imageView.setImageResource(getResources().getIdentifier(resourceId, "drawable", mContext.getPackageName()));
 
     GraphView.GraphViewData[] points;
     int length = 24; //weather for the next 24 hours
