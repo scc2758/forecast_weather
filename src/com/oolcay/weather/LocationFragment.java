@@ -43,11 +43,6 @@ public class LocationFragment extends Fragment {
       Bundle savedInstanceState){
     View v = inflater.inflate(R.layout.location_fragment, parent, false);
 
-     LinearLayout firstPage = (LinearLayout)v.findViewById(R.id.onePage);
-    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) firstPage.getLayoutParams();
-    params.height = mForecastApplication.getHeight();
-    firstPage.setLayoutParams(params);
-
     TextView textView = (TextView)v.findViewById(R.id.location);
     textView.setText(mLocation.getName());
 
@@ -60,9 +55,8 @@ public class LocationFragment extends Fragment {
     textView.setText(weather.getSummary());
 
     ImageView imageView = (ImageView)v.findViewById(R.id.weather_icon);
+    //use regex to change icon name to one usable by android
     String resourceId = weather.getIcon().replaceAll("-", "_");
-    Log.e("helpme", resourceId);
-
     imageView.setImageResource(getResources().getIdentifier(resourceId, "drawable", mContext.getPackageName()));
 
     GraphView.GraphViewData[] points;
@@ -73,19 +67,6 @@ public class LocationFragment extends Fragment {
       double temp = weather.getHourly().get(x).getTemperature();
       points[x] = new GraphView.GraphViewData(time, temp);
     }
-
-    GraphView graphView = new LineGraphView(
-        mContext
-        , "Hourly Tempature" // heading
-    );
-
-    graphView.getGraphViewStyle().setNumHorizontalLabels(1);
-    graphView.getGraphViewStyle().setGridColor(Color.TRANSPARENT);
-    graphView.getGraphViewStyle().setNumVerticalLabels(5);
-    //graphView.setHorizontalLabels(new String[] {"12:01 am", "12:00 pm", "11:59 pm"});
-    graphView.addSeries(new GraphViewSeries(points));
-    LinearLayout layout = (LinearLayout) v.findViewById(R.id.graph);
-    layout.addView(graphView);
 
     return v;
   }
