@@ -45,7 +45,13 @@ public class MainActivity extends FragmentActivity {
     layout.addView(mViewPager);
 
     mDatabaseHandler = new DatabaseHandler(context);
-    state.setAllLocations(mDatabaseHandler.getAllLocations());
+
+    List<Location> locations = mDatabaseHandler.getAllLocations();
+
+    //set locations or update if count has changed
+    if (state.getAllLocations() == null || locations.size() != state.getAllLocations().size()){
+      state.setAllLocations(locations);
+    }
 
     ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
     progressBar.setVisibility(View.GONE);
