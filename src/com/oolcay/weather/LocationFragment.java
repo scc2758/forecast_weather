@@ -21,6 +21,7 @@ import org.json.JSONObject;
 public class LocationFragment extends Fragment {
 
   public static final String EXTRA_LOCATION_ID = "extra_location_id";
+  public static final int TIME_BETWEEN_UPDATES = 600000; //ten minutes (milli)
 
   private Location mLocation;
   private Context mContext;
@@ -54,7 +55,7 @@ public class LocationFragment extends Fragment {
     mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
     mLocation = mForecastApplication.getAllLocations().get(mId);
 
-    if (mWeather != null){
+    if (mWeather != null &&  System.currentTimeMillis() - mLocation.getLastUpdated() < TIME_BETWEEN_UPDATES ){
       displayWeather();
     } else {
       GetWeather getWeather = new GetWeather(mView);
@@ -123,6 +124,7 @@ public class LocationFragment extends Fragment {
         weather.setIcon(currently.getString("icon"));
 
         mLocation.setWeather(weather);
+        mLocation.setLastUpdated(System.currentTimeMillis());
 
         Log.e("LOADING:", "LOADING");
 
