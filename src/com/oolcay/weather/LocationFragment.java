@@ -117,6 +117,7 @@ public class LocationFragment extends Fragment {
 
     @Override
     protected Void doInBackground(Object... params) {
+      showWeather(false);
       JSONObject weatherData = null;
       try {
         Request request = new Request();
