@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+        <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"/>
+
+        <LinearLayout
+                android:id="@+id/weatherHolder"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:orientation="vertical"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
+                android:visibility="invisible">
 
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:orientation="vertical">
+            <TextView
+                    android:id="@+id/location"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:gravity="center"/>
 
-        <LinearLayout android:orientation="vertical"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:background="#EAEAEA"
-                      android:id="@+id/onePage">
+            <TextView
+                    android:id="@+id/temp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="150sp"
+                    android:fontFamily="sans-serif-thin"
+                    android:layout_margin="1sp"
+                    android:includeFontPadding="false"
+                    android:padding="1sp"/>
 
-            <TextView android:id="@+id/location"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:textSize="24sp"
-                      android:gravity="center"/>
+            <ImageView
+                    android:id="@+id/weather_icon"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/partly_cloudy_day"/>
 
-            <TextView android:id="@+id/temp"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:gravity="center"
-                      android:textSize="200sp"
-                      android:fontFamily="sans-serif-thin"
-                      android:layout_margin="1sp"
-                      android:includeFontPadding="false"
-                      android:padding="1sp"/>
-
-            <ImageView android:id="@+id/weather_icon"
-                       android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
-                       android:layout_gravity="center_horizontal"
-                       android:src="@drawable/partly_cloudy_day"/>
-
-            <TextView android:id="@+id/summary"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:gravity="center"
-                      android:text="Test"/>
-
+            <TextView
+                    android:id="@+id/summary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Test"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
