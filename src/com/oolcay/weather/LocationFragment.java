@@ -1,8 +1,7 @@
 package com.oolcay.weather;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
 import com.oolcay.weather.Models.Location;
 import com.oolcay.weather.Models.Weather;
+import com.oolcay.weather.Network.Request;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LocationFragment extends Fragment {
 
@@ -25,50 +25,43 @@ public class LocationFragment extends Fragment {
   private Location mLocation;
   private Context mContext;
   private ForecastApplication mForecastApplication;
+  private Weather mWeather;
+  private View mView;
+  private int mId;
 
   @Override
   public void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
 
-    int id = getArguments().getInt(LocationFragment.EXTRA_LOCATION_ID);
+    mId = getArguments().getInt(LocationFragment.EXTRA_LOCATION_ID);
 
     mContext = getActivity();
     mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
-    mLocation = mForecastApplication.getAllLocations().get(id);
+    mLocation = mForecastApplication.getAllLocations().get(mId);
+    mWeather = mLocation.getWeather();
 
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup parent,
       Bundle savedInstanceState){
-    View v = inflater.inflate(R.layout.location_fragment, parent, false);
 
-    TextView textView = (TextView)v.findViewById(R.id.location);
+    mView = inflater.inflate(R.layout.location_fragment, parent, false);
+
+    TextView textView = (TextView)mView.findViewById(R.id.location);
     textView.setText(mLocation.getName());
 
-    Weather weather = mLocation.getWeather();
+    mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
+    mLocation = mForecastApplication.getAllLocations().get(mId);
 
-    textView = (TextView)v.findViewById(R.id.temp);
-    textView.setText(Integer.toString((int)Math.round(weather.getTemperature())) + (char) 0x00B0);
-
-    textView = (TextView)v.findViewById(R.id.summary);
-    textView.setText(weather.getSummary());
-
-    ImageView imageView = (ImageView)v.findViewById(R.id.weather_icon);
-    //use regex to change icon name to one usable by android
-    String resourceId = weather.getIcon().replaceAll("-", "_");
-    imageView.setImageResource(getResources().getIdentifier(resourceId, "drawable", mContext.getPackageName()));
-
-    GraphView.GraphViewData[] points;
-    int length = 24; //weather for the next 24 hours
-    points = new GraphView.GraphViewData[length];
-    for (int x = 0; x < length; x++){
-      int time = weather.getHourly().get(x).getTime();
-      double temp = weather.getHourly().get(x).getTemperature();
-      points[x] = new GraphView.GraphViewData(time, temp);
+    if (mWeather != null){
+      displayWeather();
+    } else {
+      GetWeather getWeather = new GetWeather(mView);
+      getWeather.execute();
     }
 
-    return v;
+    return mView;
   }
 
   public static LocationFragment newInstance(int locationId){
@@ -79,5 +72,90 @@ public class LocationFragment extends Fragment {
     fragment.setArguments(args);
 
     return fragment;
+  }
+
+  private void displayWeather(){
+    TextView textView;
+    mWeather = mLocation.getWeather();
+
+    LinearLayout weatherHolder = (LinearLayout)mView.findViewById(R.id.weatherHolder);
+    weatherHolder.setVisibility(View.VISIBLE);
+
+    ProgressBar progressBar = (ProgressBar)mView.findViewById(R.id.progressBar);
+    progressBar.setVisibility(View.GONE);
+
+    textView = (TextView)mView.findViewById(R.id.temp);
+    textView.setText(Integer.toString((int)Math.round(mWeather.getTemperature())) + (char) 0x00B0);
+
+    textView = (TextView)mView.findViewById(R.id.summary);
+    textView.setText(mWeather.getSummary());
+
+    ImageView imageView = (ImageView)mView.findViewById(R.id.weather_icon);
+    //use regex to change icon name to one usable by android
+    String resourceId = mWeather.getIcon().replaceAll("-", "_");
+    imageView.setImageResource(getResources().getIdentifier(resourceId, "drawable", mContext.getPackageName()));
+
+  }
+
+  public class GetWeather extends AsyncTask<Object, Void, Void> {
+
+    private View mView;
+
+    GetWeather(View v) {
+      mView = v;
+    }
+
+    @Override
+    protected Void doInBackground(Object... params) {
+      JSONObject weatherData = null;
+      try {
+        Request request = new Request();
+        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mLocation.getLat() + "," + mLocation.getLon());
+        weatherData = request.getJsonResponse();
+
+        JSONObject currently = weatherData.getJSONObject("currently");
+        String temperature = currently.getString("temperature");
+
+        Weather weather = new Weather();
+
+        weather.setTemperature(Double.parseDouble(temperature));
+        weather.setSummary(currently.getString("summary"));
+        weather.setIcon(currently.getString("icon"));
+
+        mLocation.setWeather(weather);
+
+        Log.e("LOADING:", "LOADING");
+
+        //mLocation.setWeather(createWeather(weatherData));
+
+      } catch (Exception e) {
+        Log.e("WEATHER", e.toString());
+      }
+      return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void v) {
+        displayWeather();
+    }
+
+    private Weather createWeather(JSONObject dataPoint) throws JSONException{
+      Weather weather = new Weather();
+
+      try {
+        weather.setTemperature(dataPoint.getDouble("temperature"));
+      } catch (Exception e){
+        Log.d(getString(R.string.error_tag), getString(R.string.no_data_in_json));
+      }
+
+      try {
+        weather.setIcon(dataPoint.getString("icon"));
+      } catch (Exception e){
+        Log.d(getString(R.string.error_tag), getString(R.string.no_data_in_json));
+      }
+
+      weather.setTime(dataPoint.getInt("time"));
+      return weather;
+    }
   }
 }
