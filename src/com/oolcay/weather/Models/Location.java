@@ -25,6 +25,7 @@ public class Location {
     mName = name;
     mLat = lat;
     mLon = lon;
+    mLastUpdated = 0;
   }
 
   public long getLastUpdated(){
