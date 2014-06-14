@@ -30,7 +30,7 @@ public class LocationActivity extends ListActivity {
 
     DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
-    //do we need a custom adapter for an array of locations, when all we display is a string
+    //TODO: customer array adapter, we need more than the name
     List<Location> locations = databaseHandler.getAllLocations();
     List<String> locationsArry = new ArrayList<String>();
 
@@ -48,7 +48,8 @@ public class LocationActivity extends ListActivity {
 
   @Override
   protected void onListItemClick(ListView l, View v, int position, long id) {
-    super.onListItemClick(l, v, position, id);
+    super.onListItemClick(l, v, position, id)
+    ;
   }
 
   private void findLocation(String search){

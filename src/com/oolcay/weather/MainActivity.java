@@ -2,24 +2,20 @@ package com.oolcay.weather;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+import com.google.android.gms.common.ConnectionResult;
 import com.oolcay.weather.Models.Location;
-import com.oolcay.weather.Models.Weather;
-import com.oolcay.weather.Network.Request;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +33,13 @@ public class MainActivity extends FragmentActivity {
     Context context = getApplicationContext();
     state = ((ForecastApplication) getApplicationContext());
     setContentView(R.layout.main);
+
+    int resultCode =
+        GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+    // If Google Play services is available
+    if (ConnectionResult.SUCCESS == resultCode) {
+      Toast.makeText(context, "Play Here", Toast.LENGTH_LONG).show();
+    }
 
     mViewPager = new ViewPager(this);
     mViewPager.setId(R.id.viewPager);
