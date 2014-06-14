@@ -79,11 +79,7 @@ public class LocationFragment extends Fragment {
     TextView textView;
     mWeather = mLocation.getWeather();
 
-    LinearLayout weatherHolder = (LinearLayout)mView.findViewById(R.id.weatherHolder);
-    weatherHolder.setVisibility(View.VISIBLE);
-
-    ProgressBar progressBar = (ProgressBar)mView.findViewById(R.id.progressBar);
-    progressBar.setVisibility(View.GONE);
+    showWeather(true);
 
     textView = (TextView)mView.findViewById(R.id.temp);
     textView.setText(Integer.toString((int)Math.round(mWeather.getTemperature())) + (char) 0x00B0);
@@ -96,6 +92,19 @@ public class LocationFragment extends Fragment {
     String resourceId = mWeather.getIcon().replaceAll("-", "_");
     imageView.setImageResource(getResources().getIdentifier(resourceId, "drawable", mContext.getPackageName()));
 
+  }
+
+  private void showWeather(Boolean show){
+    LinearLayout weatherHolder = (LinearLayout)mView.findViewById(R.id.weatherHolder);
+    ProgressBar progressBar = (ProgressBar)mView.findViewById(R.id.progressBar);
+
+    if (show){
+      weatherHolder.setVisibility(View.VISIBLE);
+      progressBar.setVisibility(View.GONE);
+    }else{
+      weatherHolder.setVisibility(View.GONE);
+      progressBar.setVisibility(View.VISIBLE);
+    }
   }
 
   public class GetWeather extends AsyncTask<Object, Void, Void> {
