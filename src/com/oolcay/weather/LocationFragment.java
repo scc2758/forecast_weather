@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.oolcay.weather.Models.Location;
+import com.oolcay.weather.Models.WeatherLocation;
 import com.oolcay.weather.Models.Weather;
 import com.oolcay.weather.Network.Request;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ public class LocationFragment extends Fragment {
   public static final String EXTRA_LOCATION_ID = "extra_location_id";
   public static final int TIME_BETWEEN_UPDATES = 600000; //ten minutes (milli)
 
-  private Location mLocation;
+  private WeatherLocation mWeatherLocation;
   private Context mContext;
   private ForecastApplication mForecastApplication;
   private Weather mWeather;
@@ -38,8 +38,8 @@ public class LocationFragment extends Fragment {
 
     mContext = getActivity();
     mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
-    mLocation = mForecastApplication.getAllLocations().get(mId);
-    mWeather = mLocation.getWeather();
+    mWeatherLocation = mForecastApplication.getAllWeatherLocations().get(mId);
+    mWeather = mWeatherLocation.getWeather();
 
   }
 
@@ -50,12 +50,12 @@ public class LocationFragment extends Fragment {
     mView = inflater.inflate(R.layout.location_fragment, parent, false);
 
     TextView textView = (TextView)mView.findViewById(R.id.location);
-    textView.setText(mLocation.getName());
+    textView.setText(mWeatherLocation.getName());
 
     mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
-    mLocation = mForecastApplication.getAllLocations().get(mId);
+    mWeatherLocation = mForecastApplication.getAllWeatherLocations().get(mId);
 
-    if (mWeather != null &&  System.currentTimeMillis() - mLocation.getLastUpdated() < TIME_BETWEEN_UPDATES ){
+    if (mWeather != null &&  System.currentTimeMillis() - mWeatherLocation.getLastUpdated() < TIME_BETWEEN_UPDATES ){
       displayWeather();
     } else {
       GetWeather getWeather = new GetWeather(mView);
@@ -77,7 +77,7 @@ public class LocationFragment extends Fragment {
 
   private void displayWeather(){
     TextView textView;
-    mWeather = mLocation.getWeather();
+    mWeather = mWeatherLocation.getWeather();
 
     showWeather(true);
 
@@ -120,7 +120,7 @@ public class LocationFragment extends Fragment {
       JSONObject weatherData = null;
       try {
         Request request = new Request();
-        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mLocation.getLat() + "," + mLocation.getLon());
+        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mWeatherLocation.getLat() + "," + mWeatherLocation.getLon());
         weatherData = request.getJsonResponse();
 
         JSONObject currently = weatherData.getJSONObject("currently");
@@ -132,12 +132,12 @@ public class LocationFragment extends Fragment {
         weather.setSummary(currently.getString("summary"));
         weather.setIcon(currently.getString("icon"));
 
-        mLocation.setWeather(weather);
-        mLocation.setLastUpdated(System.currentTimeMillis());
+        mWeatherLocation.setWeather(weather);
+        mWeatherLocation.setLastUpdated(System.currentTimeMillis());
 
         Log.e("LOADING:", "LOADING");
 
-        //mLocation.setWeather(createWeather(weatherData));
+        //mWeatherLocation.setWeather(createWeather(weatherData));
 
       } catch (Exception e) {
         Log.e("WEATHER", e.toString());

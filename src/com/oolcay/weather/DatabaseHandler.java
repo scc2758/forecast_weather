@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.oolcay.weather.Models.Location;
+import com.oolcay.weather.Models.WeatherLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +39,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
   }
 
-  public void addLocation(Location location) {
+  public void addLocation(WeatherLocation weatherLocation) {
     SQLiteDatabase db = this.getWritableDatabase();
 
     ContentValues values = new ContentValues();
-    values.put(KEY_NAME, location.getName());
-    values.put(KEY_LAT, location.getLat());
-    values.put(KEY_LON, location.getLon());
+    values.put(KEY_NAME, weatherLocation.getName());
+    values.put(KEY_LAT, weatherLocation.getLat());
+    values.put(KEY_LON, weatherLocation.getLon());
     db.insert(TABLE_LOCATIONS, null, values);
     db.close();
   }
 
-  public List<Location> getAllLocations(){
-    List<Location> locations = new ArrayList<Location>();
+  public List<WeatherLocation> getAllLocations(){
+    List<WeatherLocation> weatherLocations = new ArrayList<WeatherLocation>();
 
     String selectQuery = "SELECT  * FROM " + TABLE_LOCATIONS;
 
@@ -60,18 +60,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     if (cursor.moveToFirst()) {
       do {
-        Location location = new Location();
-        location.setId(Integer.parseInt(cursor.getString(0)));
-        location.setName(cursor.getString(1));
-        location.setLat(Double.parseDouble(cursor.getString(2)));
-        location.setLon(Double.parseDouble(cursor.getString(3)));
-        locations.add(location);
+        WeatherLocation weatherLocation = new WeatherLocation();
+        weatherLocation.setId(Integer.parseInt(cursor.getString(0)));
+        weatherLocation.setName(cursor.getString(1));
+        weatherLocation.setLat(Double.parseDouble(cursor.getString(2)));
+        weatherLocation.setLon(Double.parseDouble(cursor.getString(3)));
+        weatherLocations.add(weatherLocation);
       } while (cursor.moveToNext());
     }
-    return locations;
+    return weatherLocations;
   }
 
-  Location getLocation(int id) {
+  WeatherLocation getLocation(int id) {
     SQLiteDatabase db = this.getReadableDatabase();
 
     Cursor cursor = db.query(TABLE_LOCATIONS, new String[] { KEY_ID,
@@ -80,13 +80,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     if (cursor != null)
       cursor.moveToFirst();
 
-    Location location = new Location();
-    location.setId(Integer.parseInt(cursor.getString(0)));
-    location.setName(cursor.getString(1));
-    location.setLat(cursor.getDouble(2));
-    location.setLon(cursor.getDouble(3));
+    WeatherLocation weatherLocation = new WeatherLocation();
+    weatherLocation.setId(Integer.parseInt(cursor.getString(0)));
+    weatherLocation.setName(cursor.getString(1));
+    weatherLocation.setLat(cursor.getDouble(2));
+    weatherLocation.setLon(cursor.getDouble(3));
 
-    return location;
+    return weatherLocation;
   }
 
 }

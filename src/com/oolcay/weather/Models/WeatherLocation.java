@@ -1,6 +1,6 @@
 package com.oolcay.weather.Models;
 
-public class Location {
+public class WeatherLocation {
 
   private int mId;
   private String mName;
@@ -17,11 +17,11 @@ public class Location {
     mWeather = weather;
   }
 
-  public Location(){
+  public WeatherLocation(){
     mLastUpdated = -1;
   }
 
-  public Location(String name, double lat, double lon){
+  public WeatherLocation(String name, double lat, double lon){
     mName = name;
     mLat = lat;
     mLon = lon;

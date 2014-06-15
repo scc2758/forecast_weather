@@ -1,14 +1,14 @@
 package com.oolcay.weather;
 
 import android.app.Application;
-import com.oolcay.weather.Models.Location;
+import com.oolcay.weather.Models.WeatherLocation;
 
 import java.util.List;
 
 public class ForecastApplication extends Application{
 
   private int mCurrentLocation = -1;
-  private List<Location> mAllLocations = null;
+  private List<WeatherLocation> mAllWeatherLocations = null;
   private int mHeight;
 
   public int getCurrentLocation(){
@@ -19,12 +19,12 @@ public class ForecastApplication extends Application{
     mCurrentLocation = id;
   }
 
-  public List<Location> getAllLocations(){
-    return mAllLocations;
+  public List<WeatherLocation> getAllWeatherLocations(){
+    return mAllWeatherLocations;
   }
 
-  public void setAllLocations(List<Location> locations){
-    mAllLocations = locations;
+  public void setAllWeatherLocations(List<WeatherLocation> weatherLocations){
+    mAllWeatherLocations = weatherLocations;
   }
 
   public int getHeight() {

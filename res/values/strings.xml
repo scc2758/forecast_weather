@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">forecast_weather</string>
     <string name="error_tag">com.oolcay.weather</string>
-    <string name="location">Locations</string>
+    <string name="weatherLocation">Locations</string>
     <string name="settings">Settings</string>
     <string name="no_data_in_json">JSON data does not exist</string>
 </resources>

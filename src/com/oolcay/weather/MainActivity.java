@@ -13,18 +13,22 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
-import com.oolcay.weather.Models.Location;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
+import com.oolcay.weather.Models.WeatherLocation;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements
+    GooglePlayServicesClient.ConnectionCallbacks,
+    GooglePlayServicesClient.OnConnectionFailedListener {
 
   private ForecastApplication state;
   private DatabaseHandler mDatabaseHandler;
   private ViewPager mViewPager;
+  private LocationClient mLocationClient;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,12 @@ public class MainActivity extends FragmentActivity {
     // If Google Play services is available
     if (ConnectionResult.SUCCESS == resultCode) {
       Toast.makeText(context, "Play Here", Toast.LENGTH_LONG).show();
+
+      mLocationClient = new LocationClient(this, this, this);
+      //WeatherLocation location = mLocationClient.getLastLocation();
+
+
+
     }
 
     mViewPager = new ViewPager(this);
@@ -49,11 +59,11 @@ public class MainActivity extends FragmentActivity {
 
     mDatabaseHandler = new DatabaseHandler(context);
 
-    List<Location> locations = mDatabaseHandler.getAllLocations();
+    List<WeatherLocation> weatherLocations = mDatabaseHandler.getAllLocations();
 
-    //set locations or update if count has changed
-    if (state.getAllLocations() == null || locations.size() != state.getAllLocations().size()){
-      state.setAllLocations(locations);
+    //set weatherLocations or update if count has changed
+    if (state.getAllWeatherLocations() == null || weatherLocations.size() != state.getAllWeatherLocations().size()){
+      state.setAllWeatherLocations(weatherLocations);
     }
 
     ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -69,7 +79,7 @@ public class MainActivity extends FragmentActivity {
       }
       @Override
       public int getCount() {
-        return state.getAllLocations().size();
+        return state.getAllWeatherLocations().size();
       }
     });
   }
@@ -84,7 +94,7 @@ public class MainActivity extends FragmentActivity {
   public void onPause(){
     super.onPause();
     try{
-      state.setCurrentLocation(state.getAllLocations().get(mViewPager.getCurrentItem()).getId());
+      state.setCurrentLocation(state.getAllWeatherLocations().get(mViewPager.getCurrentItem()).getId());
     }catch (Exception e){
 
     }
@@ -113,8 +123,8 @@ public class MainActivity extends FragmentActivity {
     startActivity(intent);
   }
 
-  private void handleResponse(List<Location> results){
-    state.setAllLocations(results);
+  private void handleResponse(List<WeatherLocation> results){
+    state.setAllWeatherLocations(results);
 
     ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar);
     progressBar.setVisibility(View.GONE);
@@ -130,7 +140,7 @@ public class MainActivity extends FragmentActivity {
       }
       @Override
       public int getCount() {
-        return state.getAllLocations().size();
+        return state.getAllWeatherLocations().size();
       }
     });
 
@@ -138,7 +148,7 @@ public class MainActivity extends FragmentActivity {
 
     int locationId = state.getCurrentLocation();
 
-    if (state.getAllLocations().size() == 0){
+    if (state.getAllWeatherLocations().size() == 0){
 
     }else{
       if (locationId == -1){
@@ -146,11 +156,23 @@ public class MainActivity extends FragmentActivity {
       }
     }
 
-    for (int x=0; x< state.getAllLocations().size(); x++){
-      if (state.getAllLocations().get(x).getId() == state.getCurrentLocation()){
+    for (int x=0; x< state.getAllWeatherLocations().size(); x++){
+      if (state.getAllWeatherLocations().get(x).getId() == state.getCurrentLocation()){
         mViewPager.setCurrentItem(x);
         break;
       }
     }
+  }
+
+  @Override
+  public void onConnected(Bundle bundle) {
+  }
+
+  @Override
+  public void onDisconnected() {
+  }
+
+  @Override
+  public void onConnectionFailed(ConnectionResult connectionResult) {
   }
 }

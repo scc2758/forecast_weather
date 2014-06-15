@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import com.oolcay.weather.Models.Location;
+import com.oolcay.weather.Models.WeatherLocation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,11 +31,11 @@ public class LocationActivity extends ListActivity {
     DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
     //TODO: customer array adapter, we need more than the name
-    List<Location> locations = databaseHandler.getAllLocations();
+    List<WeatherLocation> weatherLocations = databaseHandler.getAllLocations();
     List<String> locationsArry = new ArrayList<String>();
 
-    for (int x=0; x< locations.size(); x++){
-      locationsArry.add(locations.get(x).getName());
+    for (int x=0; x< weatherLocations.size(); x++){
+      locationsArry.add(weatherLocations.get(x).getName());
       setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, locationsArry ));
 
     }
@@ -56,16 +56,16 @@ public class LocationActivity extends ListActivity {
     Geocoder geocoder = new Geocoder(this);
     Address address = null;
     List<Address> addresses;
-    Location location = new Location();
+    WeatherLocation weatherLocation = new WeatherLocation();
 
     try {
       addresses = geocoder.getFromLocationName(search, 1);
       if(addresses.size() > 0) {
-        location.setLat(addresses.get(0).getLatitude());
-        location.setLon(addresses.get(0).getLongitude());
-        location.setName(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
+        weatherLocation.setLat(addresses.get(0).getLatitude());
+        weatherLocation.setLon(addresses.get(0).getLongitude());
+        weatherLocation.setName(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        databaseHandler.addLocation(location);
+        databaseHandler.addLocation(weatherLocation);
       }
     } catch (IOException e) {
       Log.e(getString(R.string.error_tag), e.toString());
