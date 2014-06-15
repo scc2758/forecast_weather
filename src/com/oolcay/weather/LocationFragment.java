@@ -49,7 +49,7 @@ public class LocationFragment extends Fragment {
 
     mView = inflater.inflate(R.layout.location_fragment, parent, false);
 
-    TextView textView = (TextView)mView.findViewById(R.id.location);
+    TextView textView = (TextView)mView.findViewById(R.id.weatherLocation);
     textView.setText(mWeatherLocation.getName());
 
     mForecastApplication = (ForecastApplication)mContext.getApplicationContext();
@@ -120,7 +120,7 @@ public class LocationFragment extends Fragment {
       JSONObject weatherData = null;
       try {
         Request request = new Request();
-        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mWeatherLocation.getLat() + "," + mWeatherLocation.getLon());
+        request.setUrl(Constants.FORECAST_URL + Constants.FORECAST_KEY + "/" + mWeatherLocation.getLatitude() + "," + mWeatherLocation.getLongitude());
         weatherData = request.getJsonResponse();
 
         JSONObject currently = weatherData.getJSONObject("currently");

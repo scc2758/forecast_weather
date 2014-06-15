@@ -61,8 +61,8 @@ public class LocationActivity extends ListActivity {
     try {
       addresses = geocoder.getFromLocationName(search, 1);
       if(addresses.size() > 0) {
-        weatherLocation.setLat(addresses.get(0).getLatitude());
-        weatherLocation.setLon(addresses.get(0).getLongitude());
+        weatherLocation.setLatitude(addresses.get(0).getLatitude());
+        weatherLocation.setLongitude(addresses.get(0).getLongitude());
         weatherLocation.setName(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
         DatabaseHandler databaseHandler = new DatabaseHandler(this);
         databaseHandler.addLocation(weatherLocation);

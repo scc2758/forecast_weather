@@ -44,8 +44,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     ContentValues values = new ContentValues();
     values.put(KEY_NAME, weatherLocation.getName());
-    values.put(KEY_LAT, weatherLocation.getLat());
-    values.put(KEY_LON, weatherLocation.getLon());
+    values.put(KEY_LAT, weatherLocation.getLatitude());
+    values.put(KEY_LON, weatherLocation.getLongitude());
     db.insert(TABLE_LOCATIONS, null, values);
     db.close();
   }
@@ -63,8 +63,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         WeatherLocation weatherLocation = new WeatherLocation();
         weatherLocation.setId(Integer.parseInt(cursor.getString(0)));
         weatherLocation.setName(cursor.getString(1));
-        weatherLocation.setLat(Double.parseDouble(cursor.getString(2)));
-        weatherLocation.setLon(Double.parseDouble(cursor.getString(3)));
+        weatherLocation.setLatitude(Double.parseDouble(cursor.getString(2)));
+        weatherLocation.setLongitude(Double.parseDouble(cursor.getString(3)));
         weatherLocations.add(weatherLocation);
       } while (cursor.moveToNext());
     }
@@ -83,8 +83,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     WeatherLocation weatherLocation = new WeatherLocation();
     weatherLocation.setId(Integer.parseInt(cursor.getString(0)));
     weatherLocation.setName(cursor.getString(1));
-    weatherLocation.setLat(cursor.getDouble(2));
-    weatherLocation.setLon(cursor.getDouble(3));
+    weatherLocation.setLatitude(cursor.getDouble(2));
+    weatherLocation.setLongitude(cursor.getDouble(3));
 
     return weatherLocation;
   }
